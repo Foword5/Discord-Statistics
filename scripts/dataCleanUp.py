@@ -50,21 +50,3 @@ def readMessages(path):
             messagesData = pd.concat([messagesData,channelData]) # We add the dataframe for the channel's messages to the overall messages
     
     return messagesData.reset_index().drop("index", axis=1) # return the dataframe
-
-
-
-def readEmoji(path):
-    """Read the emoji data of the user"""
-    path = os.path.join(path,"account","user.json") # We change the path to access the user's info directly
-
-    if(not os.path.exists(path)): return None # We check if the path to the data exists
-
-    emojiData =[]
-
-    with open(os.path.join(path), 'r') as userInfoFile: # we read the channel info 
-        emojiJSONData = json.load(userInfoFile)["settings"]["frecency"]["emojiFrecency"]["emojis"]
-
-        for emoji in emojiJSONData.keys():
-            emojiData.append([emoji, emojiJSONData[emoji]["totalUses"]])
-    
-    return pd.DataFrame(emojiData, columns = ["name","totalUses"])
