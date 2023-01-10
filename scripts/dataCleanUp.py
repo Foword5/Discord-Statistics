@@ -24,28 +24,28 @@ def readMessages(path):
             with open(os.path.join(path,channel,"channel.json"), 'r') as channelInfoFile: # we read the channel info 
                 channelInfo = json.load(channelInfoFile) 
 
-                channelData["type"] = channelInfo["type"] # We add a column for the channel type
+                channelData["Type"] = channelInfo["type"] # We add a column for the channel type
 
                 # Depending on the type we save different informations about the channel
                 if channelInfo["type"] == 0 or channelInfo["type"] == 2 :
                     if "name" in channelInfo :
-                        channelData["channelName"] = channelInfo["name"] 
-                        channelData["guild"] = channelInfo["guild"]["id"] 
-                        channelData["guildName"] = channelInfo["guild"]["name"]
+                        channelData["ChannelName"] = channelInfo["name"] 
+                        channelData["Guild"] = channelInfo["guild"]["id"] 
+                        channelData["GuildName"] = channelInfo["guild"]["name"]
                     else :
-                        channelData["channelName"], channelData["guild"], channelData["guildName"] = "unknownChannelName","unknownGuildID","unknownGuildName"
+                        channelData["ChannelName"], channelData["Guild"], channelData["GuildName"] = "unknownChannelName","unknownGuildID","unknownGuildName"
                 elif channelInfo["type"] == 1 :
                     if "recipients" in channelInfo :
-                        channelData["recipient"] = channelInfo["recipients"][0] if channelInfo["recipients"][0] != userID else channelInfo["recipients"][1]
+                        channelData["Recipient"] = channelInfo["recipients"][0] if channelInfo["recipients"][0] != userID else channelInfo["recipients"][1]
                 elif channelInfo["type"] == 3 :
-                    channelData["groupName"] = channelInfo["name"] if "name" in channelInfo else "unknownGroupName"
+                    channelData["GroupName"] = channelInfo["name"] if "name" in channelInfo else "unknownGroupName"
                 elif channelInfo["type"] == 11 :
                     if "name" in channelInfo :
-                        channelData["threadName"] = channelInfo["name"] 
-                        channelData["guild"] = channelInfo["guild"]["id"] 
-                        channelData["guildName"] = channelInfo["guild"]["name"]
+                        channelData["ThreadName"] = channelInfo["name"] 
+                        channelData["Guild"] = channelInfo["guild"]["id"] 
+                        channelData["GuildName"] = channelInfo["guild"]["name"]
                     else :
-                        channelData["threadName"], channelData["guild"], channelData["guildName"] = "unknownThreadName","unknownGuildID","unknownGuildName"
+                        channelData["ThreadName"], channelData["Guild"], channelData["GuildName"] = "unknownThreadName","unknownGuildID","unknownGuildName"
 
             messagesData = pd.concat([messagesData,channelData]) # We add the dataframe for the channel's messages to the overall messages
     
