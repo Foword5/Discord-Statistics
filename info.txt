@@ -9,8 +9,9 @@ Channel Type :
 
 **** IDEAS ****
 
-most uses emoji (I don't really get how they're recorder)
 most messages sent per server
-most messages sent per people
+most messages sent per user
 average message size
 most messages content sent
+most used word
+favorite channel
