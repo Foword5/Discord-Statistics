@@ -49,7 +49,7 @@ def messagesPerUser(dataPath):
     messages["Timestamp"] = pd.to_datetime(messages["Timestamp"]) # Changing data type from string to timestamp
     messages["Type"] = messages["Type"].astype(int)
 
-    messagesPerSever = (
+    messagesPerUser = (
         messages
         [messages["Recipient"].notna()] # We take only messages comming from private channel
         .groupby(["Recipient"]) # grouping the data by user
@@ -58,3 +58,5 @@ def messagesPerUser(dataPath):
         ["Count"] # keeping the column we want
         .reset_index()
     )
+
+    return messagesPerUser
