@@ -60,3 +60,23 @@ def messagesPerUser(dataPath):
     )
 
     return messagesPerUser
+
+def mostContentSent(dataPath):
+    if not os.path.exists(dataPath):
+        return None
+
+    messages = pd.read_csv(dataPath, dtype = str, index_col=0)
+    messages["Timestamp"] = pd.to_datetime(messages["Timestamp"]) # Changing data type from string to timestamp
+    messages["Type"] = messages["Type"].astype(int)
+
+    contentCount = (
+        messages
+        [messages["Contents"].notna()] # We take only messages that have content (so message that aren't only an attachment)
+        .groupby("Contents") # grouping the data by content
+        .count() # counting the messages
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"] # keeping the column we want
+        .reset_index()
+    )
+
+    return contentCount
