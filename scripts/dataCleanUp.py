@@ -4,7 +4,7 @@ import json
 
 from scripts.functions import *
 
-def readMessages(path):
+def readMessages(path:str):
     """read all the messages from the path and combine them into one dataframe"""
     userID = getUserId(path) # We get the user's id
     path = os.path.join(path,"messages") # We change the path to access the messages directly
