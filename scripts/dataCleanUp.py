@@ -2,11 +2,11 @@ import pandas as pd
 import os
 import json
 
-from scripts.functions import getUserId
+from scripts.functions import getUserInfo
 
 def readMessages(path:str):
     """read all the messages from the path and combine them into one dataframe"""
-    userID = getUserId(path) # We get the user's id
+    userID = getUserInfo(path)["id"] # We get the user's id
     path = os.path.join(path,"messages") # We change the path to access the messages directly
 
     if(not os.path.exists(path)): return None # We check if the path to the data exists
