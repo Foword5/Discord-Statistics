@@ -2,7 +2,15 @@ import os
 import json
 
 def getUserInfo(path:str):
-    """Get the user's ID"""
+    """
+    Get the user's id, username, discriminator and avatar hash
+    
+    Parameters :
+        path (string) : the path to the package
+    
+    Return :
+        The user's information
+    """
     if(not os.path.exists(path)): # We check if the path to the data exists
         return None
     
@@ -16,7 +24,16 @@ def getUserInfo(path:str):
         }
 
 def getUserInfoById(id:str,path:str):
+    """
+    Get a user's information, only work on user with who the main user has a relationship with, else it will only return the given id
 
+    Parameters :
+        id (string) : the id of the user
+        path (string) : the path to the package
+
+    Return :
+        The user's information
+    """
     if(not os.path.exists(path)): # We check if the path to the data exists
         return None
 
