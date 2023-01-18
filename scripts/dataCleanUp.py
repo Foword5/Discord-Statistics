@@ -4,12 +4,13 @@ import json
 
 from scripts.functions import getUserInfo
 
-def readMessages(path:str):
+def readMessages(path:str, prefixes:list):
     """
     Read all the messages from the path and combine them into one dataframe
     
     Parameters :
         path (string) : the path to the package
+        prefixes (list of string) : prefixes to tell which message to disregard
 
     Return :
         The dataframe containing all the messages
@@ -57,4 +58,7 @@ def readMessages(path:str):
 
             messagesData = pd.concat([messagesData,channelData]) # We add the dataframe for the channel's messages to the overall messages
     
-    return messagesData.reset_index().drop("index", axis=1) # return the dataframe
+    messagesData = messagesData.reset_index().drop("index", axis=1)
+    messagesData = messagesData[~messagesData["Contents"].str.startswith(tuple(prefixes)).fillna(False)]
+
+    return messagesData # return the dataframe
