@@ -69,7 +69,7 @@ def mostContentSent(dataPath:str):
         dataPath (string) : the path to the file containing all the messages, created by the function in dataCleanUp.py
     
     Return :
-        The dataframe contaning the contents and the count of it
+        The dataframe contaning the different contents and the count of them
     """
     if not os.path.exists(dataPath):
         return None
@@ -90,3 +90,29 @@ def mostContentSent(dataPath:str):
     )
 
     return contentCount
+
+def mostWordSent(dataPath:str):
+    """
+    Get the count of every word in every messages
+
+    Parameters :
+        dataPath (string) : the path to the file containing all the messages, created by the function in dataCleanUp.py
+
+    Return :
+        A dataframe with the words and their count
+    """
+    if not os.path.exists(dataPath):
+        return None
+
+    messages = pd.read_csv(dataPath, dtype = str, index_col=0)
+    messages["Timestamp"] = pd.to_datetime(messages["Timestamp"]) # Changing data type from string to timestamp
+    messages["Type"] = messages["Type"].astype(int)
+    messages["Contents"] = messages["Contents"].str.lower()
+    messages = messages[messages["Contents"].notna()]
+
+
+    wordCount = messages.Contents.str.split(expand=True).stack().value_counts().reset_index()
+
+    wordCount.columns = ['Word', 'Count'] 
+    
+    return wordCount
