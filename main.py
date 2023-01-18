@@ -1,6 +1,5 @@
-from scripts.functions import *
-from scripts.dataCleanUp import *
-from scripts.dataAnalysis import *
+from scripts.dataCleanUp import readMessages
+from scripts.dataExploring import mostWordSent
 from config import *
 
 import os
@@ -14,4 +13,6 @@ if not os.path.exists(messagePath):
     readMessages(PACKAGEPATH).to_csv(messagePath)
 
 
-print(messagesPerServer(messagePath))
+print(
+    mostWordSent(messagePath)
+)
