@@ -12,6 +12,6 @@ Channel Type :
 most messages sent per server
 most messages sent per user
 average message size
-most messages content sent
+most messages content sent (remove messages with special char as first char ?)
 most used word
 favorite channel
