@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import json
 
-from scripts.functions import *
+from scripts.functions import getUserId
 
 def readMessages(path:str):
     """read all the messages from the path and combine them into one dataframe"""

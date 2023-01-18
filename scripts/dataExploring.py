@@ -1,6 +1,5 @@
-from scripts.functions import *
-from scripts.dataCleanUp import *
-
+import pandas as pd
+import os
 
 def messagesPerServer(dataPath:str):
     """
