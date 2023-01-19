@@ -42,19 +42,26 @@ def readMessages(path:str, prefixes:list):
                         channelData["Guild"] = channelInfo["guild"]["id"] 
                         channelData["GuildName"] = channelInfo["guild"]["name"]
                     else :
-                        channelData["ChannelName"], channelData["Guild"], channelData["GuildName"] = "unknownChannelName","unknownGuildID","unknownGuildName"
+                        #channelData["ChannelName"], channelData["Guild"], channelData["GuildName"] = "Left or deleted channel",channel,"Left or deleted guild"
+                        continue
                 elif channelInfo["type"] == 1 :
                     if "recipients" in channelInfo :
                         channelData["Recipient"] = channelInfo["recipients"][0] if channelInfo["recipients"][0] != userID else channelInfo["recipients"][1]
+                    else :
+                        continue
                 elif channelInfo["type"] == 3 :
-                    channelData["GroupName"] = channelInfo["name"] if "name" in channelInfo else "unknownGroupName"
+                    if "name" in channelInfo:
+                        channelData["GroupName"] = channelInfo["name"]
+                    else :
+                        continue
                 elif channelInfo["type"] == 11 :
                     if "name" in channelInfo :
                         channelData["ThreadName"] = channelInfo["name"] 
                         channelData["Guild"] = channelInfo["guild"]["id"] 
                         channelData["GuildName"] = channelInfo["guild"]["name"]
                     else :
-                        channelData["ThreadName"], channelData["Guild"], channelData["GuildName"] = "unknownThreadName","unknownGuildID","unknownGuildName"
+                        #channelData["ThreadName"], channelData["Guild"], channelData["GuildName"] = "Left or deleted thread",channel,"Left or deleted guild"
+                        continue
 
             messagesData = pd.concat([messagesData,channelData]) # We add the dataframe for the channel's messages to the overall messages
     
