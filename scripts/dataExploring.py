@@ -53,6 +53,7 @@ def messagesPerUser(dataPath:str, packagePath:str):
 
     messagesPerUser = (
         messages
+        .copy()
         [messages["Recipient"].notna()] # We take only messages comming from private channel
         .groupby(["Recipient"]) # grouping the data by user
         .count() # counting the messages
@@ -61,11 +62,15 @@ def messagesPerUser(dataPath:str, packagePath:str):
         .reset_index()
     )
 
-    messagesPerUser["RecipientName"] = messagesPerUser["Recipient"]
-    for i in range(len(messagesPerUser["Recipient"])):
-        userInfo = getUserInfoById(messagesPerUser["Recipient"][i],packagePath)
-        if type(userInfo) != str:
-            messagesPerUser["RecipientName"][i] = userInfo["username"]
+    recipientNames = [None] * len(messagesPerUser["Recipient"]) # We create a list for the recipient names
+    for i in range(len(messagesPerUser["Recipient"])): # we iterate to either add the name or the id if there is no info on the user
+        userInfo = getUserInfoById(messagesPerUser["Recipient"][i],packagePath) # we get the information on the user
+        if type(userInfo) != str: # if the info is a string, it means there is no name, only an ID
+            recipientNames[i] = userInfo["username"]
+        else :
+            recipientNames[i] = userInfo
+
+    messagesPerUser["RecipientName"] = recipientNames # We add the RecipientName column
 
     return messagesPerUser
 
