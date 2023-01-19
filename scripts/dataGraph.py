@@ -59,13 +59,21 @@ def messagesPerUserGraph(data:pd.DataFrame):
     return plt
 
 def messageSizeGraph(data:pd.DataFrame):
+    """
+    Create a barPlot of the length of messages by the number of messages
+
+    Parameters :
+        data (panda.Dataframe) : the dataframe of the messages per length, created by the function "messageSize"
+    
+    """
     plt.clf()
 
-    plt.bar(data["Length"],data["Count"])
-    plt.xticks(range(0,len(data["Count"]),5))
-    plt.gcf().set_size_inches(10, 4)
+    plt.bar(data["Length"],data["Count"]) # Create the plot
+    plt.xticks(range(0,len(data["Count"]),5)) # add the x ticks
+    plt.gcf().set_size_inches(10, 4) # change the graph size
 
-    plt.xlabel("Length of the message")
+    # adding the labels
+    plt.xlabel("Length of the message") 
     plt.ylabel("Number of messages")
 
     return plt
