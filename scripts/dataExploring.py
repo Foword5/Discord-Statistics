@@ -1,3 +1,5 @@
+from scripts.functions import getUserInfoById
+
 import pandas as pd
 import os
 
@@ -31,12 +33,13 @@ def messagesPerServer(dataPath:str):
     return messagesPerSever
 
 
-def messagesPerUser(dataPath:str):
+def messagesPerUser(dataPath:str, packagePath:str):
     """
     Get the number of messages sent to every user in private conversation.
 
     Parameters :
         dataPath (string) : the path to the file containing all the messages, created by the function in dataCleanUp.py
+        packagePath (string) : the path to the package
     
     Return :
         A dataframe containing the list of every users to whom a message was sent and the number of messages sent in it
@@ -57,6 +60,12 @@ def messagesPerUser(dataPath:str):
         ["Count"] # keeping the column we want
         .reset_index()
     )
+
+    messagesPerUser["RecipientName"] = messagesPerUser["Recipient"]
+    for i in range(len(messagesPerUser["Recipient"])):
+        userInfo = getUserInfoById(messagesPerUser["Recipient"][i],packagePath)
+        if type(userInfo) != str:
+            messagesPerUser["RecipientName"][i] = userInfo["username"]
 
     return messagesPerUser
 
