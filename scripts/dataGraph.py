@@ -57,3 +57,15 @@ def messagesPerUserGraph(data:pd.DataFrame):
     plt.pie(dataPieChart["Count"],labels=dataPieChart["RecipientName"],autopct=percentPrinted, textprops={'fontsize': 20}) # we create the pie chart
 
     return plt
+
+def messageSizeGraph(data:pd.DataFrame):
+    plt.clf()
+
+    plt.bar(data["Length"],data["Count"])
+    plt.xticks(range(0,len(data["Count"]),5))
+    plt.gcf().set_size_inches(10, 4)
+
+    plt.xlabel("Length of the message")
+    plt.ylabel("Number of messages")
+
+    return plt
