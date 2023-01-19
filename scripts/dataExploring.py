@@ -129,3 +129,33 @@ def mostWordSent(dataPath:str):
     wordCount.columns = ['Word', 'Count'] 
     
     return wordCount
+
+def messageSize(dataPath:str):
+    """
+    Count the number of messages sent per size
+
+    Parameters :
+        dataPath (String) : the path to the file containing all the messages, created by the function in dataCleanUp.py
+    
+    Return :
+        A dataframe containing the different length with their count
+    """
+    if not os.path.exists(dataPath):
+        return None
+
+    messages = pd.read_csv(dataPath, dtype = str, index_col=0)
+    messages["Length"] = messages["Contents"].str.len() # getting the length of the message
+    
+    messages = (
+        messages
+        .groupby("Length") # regroup the messages by length
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"] # keeping the column we want
+        .reset_index()
+
+    )
+    total = sum(messages["Count"]) # we take the total of messages sent
+    messages = messages[messages.Count > total*0.0005].reset_index().drop("index", axis=1) # we only keep the length that have more than 0.05% of messages
+
+    return messages
