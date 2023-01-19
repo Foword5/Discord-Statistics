@@ -156,6 +156,6 @@ def messageSize(dataPath:str):
 
     )
     total = sum(messages["Count"]) # we take the total of messages sent
-    messages = messages[messages.Count > total*0.0005].reset_index().drop("index", axis=1) # we only keep the length that have more than 0.05% of messages
+    messages = messages[messages.Count > total*0.001].reset_index().drop("index", axis=1) # we only keep the length that have more than 0.05% of messages
 
     return messages
