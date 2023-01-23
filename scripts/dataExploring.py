@@ -160,7 +160,7 @@ def messageSize(dataPath:str):
 
     return messages
 
-def favoriteChannel(dataPath:str):
+def messagesPerChannel(dataPath:str):
     """
     Counting every channel's messages
 
