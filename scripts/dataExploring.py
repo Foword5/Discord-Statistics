@@ -17,7 +17,6 @@ def messagesPerServer(dataPath:str):
         return None
 
     messages = pd.read_csv(dataPath, dtype = str, index_col=0)
-    messages["Timestamp"] = pd.to_datetime(messages["Timestamp"]) # Changing data type from string to timestamp
     messages["Type"] = messages["Type"].astype(int)
 
     messagesPerSever = (
@@ -224,3 +223,32 @@ def messagesPerChannel(dataPath:str):
     returnDF = pd.concat([messagesType1,messagesType02,messagesType3,messagesType11]).reset_index().drop("index", axis=1) # fusing all the dataframes
 
     return returnDF
+
+def messsagePerDay(dataPath:str):
+    """
+    Count the number on messages sent every day
+
+    Parameters :
+        dataPath (String) : the path to the file containing all the messages, created by the function in dataCleanUp.py
+    
+    Return :
+        the dataframe containing every day and their count of messages
+    """
+    if not os.path.exists(dataPath):
+        return None
+
+    messages = pd.read_csv(dataPath, dtype = str, index_col=0)
+    messages["Timestamp"] = pd.to_datetime(messages["Timestamp"]) # Changing data type from string to timestamp
+
+    messages["Date"] = pd.to_datetime(messages['Timestamp']).apply(lambda x: x.date()) # Keeping only the day from the timestamp
+
+    messages = (
+        messages
+        .groupby(["Date"])
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"]
+        .reset_index()
+    )
+
+    return messages
