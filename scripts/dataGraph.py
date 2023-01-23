@@ -2,6 +2,7 @@ from scripts.functions import *
 
 import pandas as pd
 from matplotlib import pyplot as plt
+import matplotlib.patches as mpatches
 import numpy as np
 
 def percentPrinted(val:int):
@@ -68,7 +69,7 @@ def messageSizeGraph(data:pd.DataFrame):
         data (pandas.Dataframe) : the dataframe of the messages per length, created by the function "messageSize"
     
     Return :
-        the barPlot
+        The barPlot
     """
     plt.clf()
 
@@ -92,6 +93,64 @@ def messageSizeGraph(data:pd.DataFrame):
 
     # adding the labels
     plt.xlabel("Length of the message") 
+    plt.ylabel("Number of messages")
+
+    return plt
+
+def messagesPerChannelGraph(data:pd.DataFrame,packagePath:str):
+    """
+    Create a barplot for the most popular channels
+
+    Parameters :
+        data (pandas.Dataframe) : the dataframe of the messages per server created using the function "messagesPerChannel"
+        packagePath (string) : the path to the package containing the user's data
+
+    Return :
+        The barPlot
+    """
+    plt.clf()
+
+    data = data.sort_values("Count", ascending=False)[:10].reset_index().drop("index", axis=1) # sorting and keeping only the top
+    data["Name"] = None # adding the name column
+    data["Color"] = None # adding the Color column
+
+    # setting the name and color to different values depending on the type of channel
+    for i in data.index :
+        match data["Type"][i]:
+            case 0 :
+                data.loc[(i,"Name")] = data["ChannelName"][i] + "\n(" + data["GuildName"][i] + ")"
+                data.loc[(i,"Color")] = "blue"
+            case 1:
+                userInfo = getUserInfoById(data["Recipient"][i],packagePath) # we get the information on the user
+                if type(userInfo) != str: # if the info is a string, it means there is no name, only an ID
+                    data.loc[(i,"Name")] = userInfo["username"]
+                else :
+                    data.loc[(i,"Name")] = userInfo
+                data.loc[(i,"Color")] = "red"
+            case 3:
+                data.loc[(i,"Name")] = data["GroupName"][i]
+                data.loc[(i,"Color")] = "yellow"
+            case _:
+                data.loc[(i,"Name")] = data["ThreadName"][i] + "\n(" + data["GuildName"][i] + ")"
+                data.loc[(i,"Color")] = "green"
+
+    plt.bar(data["Name"],data["Count"], color=data["Color"]) # Create the plot
+    
+    for i in data.index :
+        plt.text(s=data["Count"][i], x=i , y=data["Count"][i], ha = 'center')
+
+
+
+    legendColor=[ # to create the legend
+        mpatches.Patch(color="blue", label="Sever"),
+        mpatches.Patch(color="red", label="Private message"),
+        mpatches.Patch(color="yellow", label="Group"),
+    ]
+
+    plt.gcf().set_size_inches(14, 4) # change the graph size
+    plt.legend(handles=legendColor, bbox_to_anchor=(1, 1), fancybox=True, shadow=True, ncol=3) # creating the legend
+    plt.xticks(rotation=30, ha='right')
+    plt.xlabel("Channel") 
     plt.ylabel("Number of messages")
 
     return plt
