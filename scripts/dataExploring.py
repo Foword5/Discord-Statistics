@@ -159,3 +159,67 @@ def messageSize(dataPath:str):
     messages = messages[messages.Count > total*0.001].reset_index().drop("index", axis=1) # we only keep the length that have more than 0.05% of messages
 
     return messages
+
+def favoriteChannel(dataPath:str):
+    """
+    Counting every channel's messages
+
+    Parameters :
+        dataPath (String) : the path to the file containing all the messages, created by the function in dataCleanUp.py
+    
+    Return :
+        the dataframe containing every channel and their count of messages
+    """
+    if not os.path.exists(dataPath):
+        return None
+
+    messages = pd.read_csv(dataPath, dtype = str, index_col=0)
+
+    # returnDF = pd.DataFrame(columns=["Channel","Type","Recipient","ChannelName","GuildName","GroupName","ThreadName"])
+
+    messagesType1 = (
+        messages
+        [messages["Type"] == "1"] # keeping only the type we want
+        .groupby(["Channel","Recipient"])
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"]
+        .reset_index()
+    )
+    messagesType1["Type"] = 1 # Readding the type column
+
+    messagesType02 = (
+        pd.concat([messages[messages.Type == "0"],messages[messages.Type == "2"]]) # keeping only the type we want
+        .groupby(["Channel","ChannelName","GuildName"])
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"]
+        .reset_index()
+    )
+    messagesType02["Type"] = 0 # Readding the type column
+
+    messagesType3 = (
+        messages
+        [messages.Type == "3"] # keeping only the type we want
+        .groupby(["Channel","GroupName"])
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"]
+        .reset_index()
+    )
+    messagesType3["Type"] = 3 # Readding the type column
+
+    messagesType11 = (
+        messages
+        [messages.Type == "11"] # keeping only the type we want
+        .groupby(["Channel","ThreadName","GuildName"])
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"]
+        .reset_index()
+    )
+    messagesType11["Type"] = 11 # Readding the type column
+
+    returnDF = pd.concat([messagesType1,messagesType02,messagesType3,messagesType11]) # fusing all the dataframes
+
+    print(returnDF)
