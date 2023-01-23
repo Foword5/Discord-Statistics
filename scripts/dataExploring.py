@@ -214,9 +214,10 @@ def messagesPerChannel(dataPath:str):
         [messages.Type == "11"] # keeping only the type we want
         .groupby(["Channel","ThreadName","GuildName"])
         .count()
-        .rename(columns = {"ID" : 'Count', "ThreadName" : "ChannelName"}) # renaming the Id column to a more suitable name
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
         ["Count"]
         .reset_index()
+        .rename(columns = {"ThreadName" : "ChannelName"})
     )
     messagesType11["Type"] = 0 # Readding the type column
 
