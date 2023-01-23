@@ -1,3 +1,5 @@
+from scripts.functions import *
+
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
@@ -20,7 +22,7 @@ def messagesPerServerGraph(data:pd.DataFrame):
     Create a pie chart of the messages sent per discord server
 
     Parameters :
-        data (panda.Dataframe) : the dataframe of the messages per server created using the function "messagesPerServer"
+        data (pandas.Dataframe) : the dataframe of the messages per server created using the function "messagesPerServer"
     
     Return :
         The pie chart
@@ -41,7 +43,7 @@ def messagesPerUserGraph(data:pd.DataFrame):
     Create a pie chart of the messages sent per discord users
 
     Parameters :
-        data (panda.Dataframe) : the dataframe of the messages per user created using the function "messagesPerUser"
+        data (pandas.Dataframe) : the dataframe of the messages per user created using the function "messagesPerUser"
     
     Return :
         The pie chart
@@ -63,14 +65,25 @@ def messageSizeGraph(data:pd.DataFrame):
     Create a barPlot of the length of messages by the number of messages
 
     Parameters :
-        data (panda.Dataframe) : the dataframe of the messages per length, created by the function "messageSize"
+        data (pandas.Dataframe) : the dataframe of the messages per length, created by the function "messageSize"
     
+    Return :
+        the barPlot
     """
     plt.clf()
 
     plt.bar(data["Length"],data["Count"]) # Create the plot
     plt.xticks(range(0,len(data["Count"]),5)) # add the x ticks
     plt.gcf().set_size_inches(10, 4) # change the graph size
+
+    max = data.sort_values("Count",ascending=False).reset_index()["Length"][0]
+    textSummary = (
+        "Mean : " + str(round(sum(data["Length"]*data["Count"])/sum(data["Count"]),2)) + "\n" +
+        "Median : " + str(weighted_median(data["Length"],data["Count"])) + "\n" +
+        "Max : " + str(int(max)) + " (" + str(data["Count"][max]) + ")"
+    )
+
+    plt.text(x=75,y=3200,s=textSummary,fontsize = 10, bbox = dict(facecolor = 'lightblue', alpha = 1))
 
     # adding the labels
     plt.xlabel("Length of the message") 
