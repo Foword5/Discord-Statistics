@@ -214,11 +214,11 @@ def messagesPerChannel(dataPath:str):
         [messages.Type == "11"] # keeping only the type we want
         .groupby(["Channel","ThreadName","GuildName"])
         .count()
-        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        .rename(columns = {"ID" : 'Count', "ThreadName" : "ChannelName"}) # renaming the Id column to a more suitable name
         ["Count"]
         .reset_index()
     )
-    messagesType11["Type"] = 11 # Readding the type column
+    messagesType11["Type"] = 0 # Readding the type column
 
     returnDF = pd.concat([messagesType1,messagesType02,messagesType3,messagesType11]).reset_index().drop("index", axis=1) # fusing all the dataframes
 
