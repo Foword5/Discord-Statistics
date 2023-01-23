@@ -177,17 +177,6 @@ def messagesPerChannel(dataPath:str):
 
     # returnDF = pd.DataFrame(columns=["Channel","Type","Recipient","ChannelName","GuildName","GroupName","ThreadName"])
 
-    messagesType1 = (
-        messages
-        [messages["Type"] == "1"] # keeping only the type we want
-        .groupby(["Channel","Recipient"])
-        .count()
-        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
-        ["Count"]
-        .reset_index()
-    )
-    messagesType1["Type"] = 1 # Readding the type column
-
     messagesType02 = (
         pd.concat([messages[messages.Type == "0"],messages[messages.Type == "2"]]) # keeping only the type we want
         .groupby(["Channel","ChannelName","GuildName"])
@@ -197,6 +186,17 @@ def messagesPerChannel(dataPath:str):
         .reset_index()
     )
     messagesType02["Type"] = 0 # Readding the type column
+
+    messagesType1 = (
+        messages
+        [messages.Type == "1"] # keeping only the type we want
+        .groupby(["Channel","Recipient"])
+        .count()
+        .rename(columns = {"ID" : 'Count'}) # renaming the Id column to a more suitable name
+        ["Count"]
+        .reset_index()
+    )
+    messagesType1["Type"] = 1 # Readding the type column
 
     messagesType3 = (
         messages
@@ -220,6 +220,6 @@ def messagesPerChannel(dataPath:str):
     )
     messagesType11["Type"] = 11 # Readding the type column
 
-    returnDF = pd.concat([messagesType1,messagesType02,messagesType3,messagesType11]) # fusing all the dataframes
+    returnDF = pd.concat([messagesType1,messagesType02,messagesType3,messagesType11]).reset_index().drop("index", axis=1) # fusing all the dataframes
 
     return returnDF
