@@ -222,4 +222,4 @@ def messagesPerChannel(dataPath:str):
 
     returnDF = pd.concat([messagesType1,messagesType02,messagesType3,messagesType11]) # fusing all the dataframes
 
-    print(returnDF)
+    return returnDF
