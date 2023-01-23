@@ -76,14 +76,19 @@ def messageSizeGraph(data:pd.DataFrame):
     plt.xticks(range(0,len(data["Count"]),5)) # add the x ticks
     plt.gcf().set_size_inches(10, 4) # change the graph size
 
-    max = data.sort_values("Count",ascending=False).reset_index()["Length"][0]
+    max = data.sort_values("Count",ascending=False).reset_index()["Length"][0] # getting the max value
     textSummary = (
-        "Mean : " + str(round(sum(data["Length"]*data["Count"])/sum(data["Count"]),2)) + "\n" +
-        "Median : " + str(weighted_median(data["Length"],data["Count"])) + "\n" +
-        "Max : " + str(int(max)) + " (" + str(data["Count"][max]) + ")"
+        "Mean : " + str(round(sum(data["Length"]*data["Count"])/sum(data["Count"]),2)) + "\n" + # computing the mean
+        "Median : " + str(weighted_median(data["Length"],data["Count"])) + "\n" + # computing the median
+        "Max : " + str(int(max)) + " (" + str(data["Count"][max]) + ")" 
     )
 
-    plt.text(x=75,y=3200,s=textSummary,fontsize = 10, bbox = dict(facecolor = 'lightblue', alpha = 1))
+    # setting the x and y coordinates for the box
+    x = data["Length"].max() * 0.85 
+    y = data["Count"].max() * 0.8
+
+    # adding the text box on the graph
+    plt.text(x=x,y=y,s=textSummary,fontsize = 10, bbox = dict(facecolor = 'lightblue', alpha = 1))
 
     # adding the labels
     plt.xlabel("Length of the message") 
