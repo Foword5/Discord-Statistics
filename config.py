@@ -1,5 +1,5 @@
 PACKAGE_PATH = "package" # the path to the user's data
-NEW_DATA_PATH = "newData" # the path where the new data will be written
+NEW_DATA_FOLDER = "newData" # the path where the new data will be written
 
 FONT = "Arial"
 
