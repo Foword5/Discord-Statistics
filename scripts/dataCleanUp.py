@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import json
 
-from scripts.functions import getUserInfo
+from scripts.functions import getUserInfo,printProgressBar
 
 def readMessages(path:str, prefixes:list):
     """
@@ -22,6 +22,10 @@ def readMessages(path:str, prefixes:list):
 
     messagesData = pd.DataFrame() # We create a new empty dataframe, we will append each channel info in it
 
+    nbrOfChannel = len(os.listdir(path)) # Number of channel present in the directory
+
+    iteration = 0
+    printProgressBar(0, nbrOfChannel, prefix = 'Reading Data :', suffix = 'Complete', length = 50) # Creating the progress bar
     for channel in os.listdir(path): # We get all the files in the folder, each representing a channel
         channelPath = os.path.join(path,channel) # We create the path to the channel folder
         if(os.path.exists(channelPath) and os.path.isdir(channelPath) and os.path.exists(os.path.join(channelPath,"messages.csv"))) : # We make sure that it is a foler that exists and contain the csv file
@@ -34,6 +38,7 @@ def readMessages(path:str, prefixes:list):
                 channelInfo = json.load(channelInfoFile) 
 
                 channelData["Type"] = channelInfo["type"] # We add a column for the channel type
+                channelData["Unknown"] = False
 
                 # Depending on the type we save different informations about the channel
                 if channelInfo["type"] == 0 or channelInfo["type"] == 2 :
@@ -42,30 +47,31 @@ def readMessages(path:str, prefixes:list):
                         channelData["Guild"] = channelInfo["guild"]["id"] 
                         channelData["GuildName"] = channelInfo["guild"]["name"]
                     else :
-                        #channelData["ChannelName"], channelData["Guild"], channelData["GuildName"] = "Left or deleted channel",channel,"Left or deleted guild"
-                        continue
+                        channelData["Unknown"] = True
                 elif channelInfo["type"] == 1 :
                     if "recipients" in channelInfo :
                         channelData["Recipient"] = channelInfo["recipients"][0] if channelInfo["recipients"][0] != userID else channelInfo["recipients"][1]
                     else :
-                        continue
+                        channelData["Unknown"] = True
                 elif channelInfo["type"] == 3 :
                     if "name" in channelInfo:
                         channelData["GroupName"] = channelInfo["name"]
                     else :
-                        continue
+                        channelData["Unknown"] = True
                 elif channelInfo["type"] == 11 :
                     if "name" in channelInfo :
                         channelData["ThreadName"] = channelInfo["name"] 
                         channelData["Guild"] = channelInfo["guild"]["id"] 
                         channelData["GuildName"] = channelInfo["guild"]["name"]
                     else :
-                        #channelData["ThreadName"], channelData["Guild"], channelData["GuildName"] = "Left or deleted thread",channel,"Left or deleted guild"
-                        continue
+                        channelData["Unknown"] = True
 
             messagesData = pd.concat([messagesData,channelData]) # We add the dataframe for the channel's messages to the overall messages
-    
+
+        iteration += 1
+        printProgressBar(iteration, nbrOfChannel, prefix = 'Reading Data :', suffix = 'Complete', length = 50) # moving the progress bar
+
     messagesData = messagesData.reset_index().drop("index", axis=1)
-    messagesData = messagesData[~messagesData["Contents"].str.startswith(tuple(prefixes)).fillna(False)]
+    messagesData = messagesData[~messagesData["Contents"].str.startswith(tuple(prefixes)).fillna(False)] # removing the messages starting with the forbiden prefixes
 
     return messagesData # return the dataframe
