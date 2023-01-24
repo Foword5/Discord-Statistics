@@ -25,6 +25,7 @@ if not os.path.exists(messagesPath):
 #                                                                         #
 ###########################################################################
 
+printProgressBar(0, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # creating the main progress bar
 pdf = FPDF(unit="mm",format=(450,360))
 pdf.add_page()
 pdf.set_font(FONT, size = 15)
@@ -39,7 +40,9 @@ pdf.cell(100,100, fill=True) # we draw the cell
 pdf.set_xy(10,10)
 
 dataMessagePerServer = messagesPerServer(messagesPath).sort_values("Count",ascending=False) # getting the proper data
+printProgressBar(1, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 plotMessagePerServer = messagesPerServerGraph(dataMessagePerServer) # getting the graph to print
+printProgressBar(2, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 pdf.set_font(FONT, size = 20)
 pdf.cell(100,10,txt="Messages sent per server", align="C", ln=1) # title
@@ -60,6 +63,7 @@ printString = printString.encode('latin-1', 'replace').decode('latin-1')
 pdf.set_xy(20,55)
 pdf.set_font(FONT, size = 12)
 pdf.multi_cell(90,5,txt=printString, align="L") # we add the text to the pdf
+printProgressBar(3, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 #######################################################################
 #                            Messages size                            #
@@ -74,12 +78,15 @@ pdf.cell(200,10,txt="Length of the messages sent", align="C", ln=1) # title
 pdf.set_font(FONT, size = 12)
 
 dataMessageLength = messageSize(messagesPath)
+printProgressBar(4, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 plotMessageLength = messageSizeGraph(dataMessageLength)
+printProgressBar(5, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 imgPath = os.path.join(NEW_DATA_FOLDER,"imageGraph3.png") # we create the path for the new image
 plotMessageLength.savefig(imgPath,transparent=True,bbox_inches='tight') # we save the plot as a png file
 
 pdf.image(imgPath,120,20,200,0) # we add the image to the pdf
+printProgressBar(6, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 #######################################################################
 #                        Messages sent per user                       #
@@ -90,7 +97,9 @@ pdf.cell(100,100, fill=True) # we draw the cell
 pdf.set_xy(330,10)
 
 dataMessagePerUser = messagesPerUser(messagesPath, PACKAGE_PATH).sort_values("Count",ascending=False) # getting the proper data
+printProgressBar(7, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 plotMessagePerUser = messagesPerUserGraph(dataMessagePerUser) # getting the graph to print
+printProgressBar(8, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 pdf.set_font(FONT, size = 20)
 pdf.cell(100,10,txt="Messages sent per user", align="C", ln=1) # we add the title
@@ -111,6 +120,7 @@ printString = printString.encode('latin-1', 'replace').decode('latin-1')
 pdf.set_xy(340,55)
 pdf.set_font(FONT, size = 12)
 pdf.multi_cell(90,5,txt=printString, align="L") #  we add the text to the pdf
+printProgressBar(9, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 #######################################################################
 #                         Most Sent messages                          #
@@ -125,6 +135,7 @@ pdf.cell(100,10,txt="Most sent messsages", align="C", ln=1) # we add the title
 pdf.set_font(FONT, size = 12)
 
 dataMostSendMessages = mostContentSent(messagesPath).sort_values("Count",ascending=False).reset_index()[:38]
+printProgressBar(10, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 printString = ""
 
 for i in range(len(dataMostSendMessages)):
@@ -138,6 +149,7 @@ printString = printString.encode('latin-1', 'replace').decode('latin-1')
 
 pdf.set_xy(20,130)
 pdf.multi_cell(90,5,txt=printString, align="L") #  we add the text to the pdf
+printProgressBar(11, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 #######################################################################
 #                           Most used word                            #
@@ -152,6 +164,7 @@ pdf.cell(100,10,txt="Most used word", align="C", ln=1) # we add the title
 pdf.set_font(FONT, size = 12)
 
 dataMostUsedWord = mostWordSent(messagesPath).sort_values("Count",ascending=False).reset_index()[:38]
+printProgressBar(12, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 printString = ""
 
 for i in range(len(dataMostUsedWord)):
@@ -165,6 +178,7 @@ printString = printString.encode('latin-1', 'replace').decode('latin-1')
 
 pdf.set_xy(340,130)
 pdf.multi_cell(90,5,txt=printString, align="L") #  we add the text to the pdf
+printProgressBar(13, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 #######################################################################
 #                          Favorite channel                           #
@@ -179,12 +193,15 @@ pdf.cell(200,10,txt="Most popular channels", align="C", ln=1) # we add the title
 pdf.set_font(FONT, size = 12)
 
 dataFavChannel = messagesPerChannel(messagesPath)
+printProgressBar(14, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 plotFavChannel = messagesPerChannelGraph(dataFavChannel, PACKAGE_PATH)
+printProgressBar(15, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 imgPath = os.path.join(NEW_DATA_FOLDER,"imageGraph4.png") # we create the path for the image
 plotFavChannel.savefig(imgPath,transparent=True,bbox_inches='tight') # we save the plot as a png file
 
 pdf.image(imgPath,120,130,200,0) # we add the image to the pdf
+printProgressBar(16, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 #######################################################################
 #                        Messages sent per day                        #
@@ -199,13 +216,23 @@ pdf.cell(200,10,txt="Messages per day", align="C", ln=1) # we add the title
 pdf.set_font(FONT, size = 12)
 
 dataMessagesPerDay = messsagePerDay(messagesPath)
+printProgressBar(17, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 plotMessagesPerDay = messagePerDayGraph(dataMessagesPerDay)
+printProgressBar(18, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 imgPath = os.path.join(NEW_DATA_FOLDER,"imageGraph5.png") # we create the path for the image
 plotMessagesPerDay.savefig(imgPath,transparent=True,bbox_inches='tight') # we save the plot as a png file
 
 pdf.image(imgPath,120,240,200,0) # we add the image to the pdf
-
-
+printProgressBar(19, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 
 pdf.output("Result.pdf")
+printProgressBar(20, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
+print(
+    "############################################################################################ \n" +
+    "#                                                                                          # \n" +
+    "#                                  You're PDF is ready !                                   # \n" +
+    "#         If you ever change the data, don't forget to delete the 'newData' folder         # \n" +
+    "#                                                                                          # \n" +
+    "############################################################################################ \n"
+)
