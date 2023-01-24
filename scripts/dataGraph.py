@@ -154,3 +154,41 @@ def messagesPerChannelGraph(data:pd.DataFrame,packagePath:str):
     plt.ylabel("Number of messages")
 
     return plt
+
+def messagePerDayGraph(data:pd.DataFrame):
+    """
+    Create a plot to represent the evolution of the number of messages sent everyday
+
+    Parameters :
+        data (pandas.Dataframe) : the dataframe of the messages per server created using the function "messsagePerDay"
+
+    Return :
+        The barPlot
+    """
+    plt.clf()
+
+    plt.plot(data["Date"],data["Count"])
+    
+    window = 30
+    movingAvg = movingAverage(data["Count"],window)
+
+    plt.plot(data["Date"][int(window/2):len(movingAvg)+int(window/2)],movingAvg, color = "red")
+    
+    plt.gcf().set_size_inches(10, 4) # change the graph size
+
+    max = data.sort_values("Count", ascending=False).reset_index()["index"][0]
+
+    textSummary = (
+        "Max : " + str(data["Count"][max]) + " (" + str(data["Date"][max]) + ") \n" +
+        "Mean : " + str(round((sum(data["Count"])/len(data["Count"])),2)) + "\n" +
+        "Median : " +  str(data["Count"].median())
+    )
+
+    # adding the text box on the graph
+    plt.text(x=data["Date"].max(),y=data["Count"][max],s=textSummary,fontsize = 10, bbox = dict(facecolor = 'lightblue', alpha = 1))
+
+    plt.xticks(rotation=30, ha='right')
+    plt.xlabel("Years") 
+    plt.ylabel("Number of messages")
+
+    return plt
