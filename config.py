@@ -5,5 +5,5 @@ FONT = "Arial"
 
 # a list of all the prefixes whose messages strating with them will be ignored in the statistics
 REMOVED_PREFIX = [
-    "$"
+    
 ]
