@@ -63,3 +63,24 @@ def weighted_median(values:pd.Series,weights:pd.Series):
         position += weights[i]
         i += 1
     return values[i]-0.5
+
+def movingAverage(data:pd.Series,window:int):
+    """
+    Compute the moving average of a list
+
+    Parameters :
+        data (pandas.Series) : the list
+        window (int) : the window
+    
+    Return :
+        the list of the moving average
+    """
+    result = []
+    moving_sum = sum(data[:window])
+    result.append(moving_sum / window)
+
+    for i in range(len(data)- window) :
+        moving_sum += data[i + window]
+        moving_sum -= data[i]
+        result.append(moving_sum / window)
+    return result
