@@ -245,6 +245,7 @@ print(
     "############################################################################################ \n" +
     "#                                                                                          # \n" +
     "#                                  You're PDF is ready !                                   # \n" +
+    "#                    The pdf as been created under the name \"Result.pdf\"                   # \n" +
     "#         If you ever change the data, don't forget to delete the 'newData' folder         # \n" +
     "#                                                                                          # \n" +
     "############################################################################################ \n"
