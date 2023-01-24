@@ -84,3 +84,26 @@ def movingAverage(data:pd.Series,window:int):
         moving_sum -= data[i]
         result.append(moving_sum / window)
     return result
+
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    - By Greenstick from StackOverflow (https://stackoverflow.com/users/2206251/greenstick)
+    
+    Parameters :
+        iteration (int) : current iteration
+        total (int): total iterations (Int)
+        prefix (str)  : prefix string (Str) (Optional)
+        suffix (str)  : suffix string (Str) (Optional)
+        decimal (int)  : positive number of decimals in percent complete (Int) (Optional)
+        length (int)  : character length of bar (Int) (Optional)
+        fill (str)  : bar fill character (Str) (Optional)
+        printEnd(str) : end character (e.g. "\r", "\r\n") (Optional)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+    # Print New Line on Complete
+    if iteration == total: 
+        print()
