@@ -5,8 +5,20 @@ from scripts.functions import *
 from config import *
 
 from fpdf import FPDF
-import os
 
+import os
+import sys
+
+if not os.path.exists(PACKAGE_PATH):
+    sys.exit(
+    "############################################################################################ \n" +
+    "#                                                                                          # \n" +
+    "#                                Package folder not found !                                # \n" +
+    "#         Once you downloaded the data from discord, put them on the root folder           # \n" +
+    "#                                under the name \"package\"                                  # \n" +
+    "#                                                                                          # \n" +
+    "############################################################################################ \n"
+    )
 
 # the file containing the messages dataframe, in the newData folder
 messagesFile = "message.csv"
@@ -229,6 +241,7 @@ printProgressBar(19, 20, prefix = 'Creating the PDF :', suffix = 'Complete', len
 pdf.output("Result.pdf")
 printProgressBar(20, 20, prefix = 'Creating the PDF :', suffix = 'Complete', length = 50) # updating the progressbar
 print(
+    "\n" +
     "############################################################################################ \n" +
     "#                                                                                          # \n" +
     "#                                  You're PDF is ready !                                   # \n" +
