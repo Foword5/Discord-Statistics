@@ -30,7 +30,7 @@ To get your discord data, follow these steps :
 ### Running
 
 ```
-py main.py
+python3 main.py
 ```
 
 ### Configuration
