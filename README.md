@@ -1,4 +1,4 @@
-# Discord Statistics v1.0
+# Discord Statistics v1.1
 
 Discord allows user to download all the data they collected from you, Using this data, this script create statistics, graphs and more on you.
 

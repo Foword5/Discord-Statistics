@@ -20,7 +20,8 @@ def readMessages(path:str, prefixes:list):
 
     if(not os.path.exists(path)): return None # We check if the path to the data exists
 
-    messagesData = pd.DataFrame() # We create a new empty dataframe, we will append each channel info in it
+    messagesData = pd.DataFrame(columns=["ID","Timestamp","Contents","Attachments","Channel","Type","Unknown","Recipient","ChannelName","Guild","GuildName","GroupName","ThreadName"]) # We create a new empty dataframe, we will append each channel info in it
+    messagesData["Unknown"] = messagesData["Unknown"].astype(bool)
 
     nbrOfChannel = len(os.listdir(path)) # Number of channel present in the directory
 

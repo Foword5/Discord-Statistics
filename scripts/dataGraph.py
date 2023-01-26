@@ -172,7 +172,10 @@ def messagePerDayGraph(data:pd.DataFrame):
     window = 30
     movingAvg = movingAverage(data["Count"],window)
 
-    plt.plot(data["Date"][int(window/2):len(movingAvg)+int(window/2)],movingAvg, color = "red")
+    if len(data) > window :
+        plt.plot(data["Date"][int(window/2):len(movingAvg)+int(window/2)],movingAvg, color = "red")
+    else :
+        plt.plot(data["Date"][:len(movingAvg)],movingAvg, color = "red")
     
     plt.gcf().set_size_inches(10, 4) # change the graph size
 

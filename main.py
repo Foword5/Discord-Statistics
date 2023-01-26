@@ -25,11 +25,7 @@ messagesFile = "message.csv"
 
 # creating the messages file if it doesn't exist
 messagesPath = os.path.join(NEW_DATA_FOLDER,messagesFile)
-if not os.path.exists(messagesPath):
-    if not os.path.exists(NEW_DATA_FOLDER) or os.path.isdir(NEW_DATA_FOLDER):
-        os.mkdir(NEW_DATA_FOLDER)
-    readMessages(PACKAGE_PATH,REMOVED_PREFIX).to_csv(messagesPath)
-
+readMessages(PACKAGE_PATH,REMOVED_PREFIX).to_csv(messagesPath)
 
 ###########################################################################
 #                                                                         #
