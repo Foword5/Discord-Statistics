@@ -242,8 +242,8 @@ print(
     "\n" +
     "############################################################################################ \n" +
     "#                                                                                          # \n" +
-    "#                                  You're PDF is ready !                                   # \n" +
-    "#                    The pdf as been created under the name \"Result.pdf\"                   # \n" +
+    "#                                  Your PDF is ready !                                     # \n" +
+    "#                    The pdf has been created under the name \"Result.pdf\"                  # \n" +
     "#                                                                                          # \n" +
     "############################################################################################ \n"
 )
